@@ -3,6 +3,8 @@
 ## Config
 
 - you need to create the articles,images folders
+- you will need anopenapi key
+- you will need a wordpress user that has a Application Password setup
 - you need to generate  config.json
 
 ```json
