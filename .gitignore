@@ -3,3 +3,4 @@ config.json
 *.json
 *.png
 Pipfile.lock
+!images/image-63-thegem-blog-default.png

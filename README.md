@@ -45,3 +45,7 @@ pipenv install -r requirements
 # run the app
 python news_feed.py
 ```
+
+## Example
+
+- [Example](example.md)
