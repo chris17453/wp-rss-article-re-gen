@@ -1,0 +1,5 @@
+config.json
+.vscode-upload.json
+*.json
+*.png
+Pipfile.lock
