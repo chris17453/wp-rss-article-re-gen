@@ -1,3 +1,4 @@
+# AI UPSCALED STAR TREK: A SURPRISINGLY PLEASANT VIEWING EXPERIENCE
 
 ![Alt text](/images/image-63-thegem-blog-default.png)
 
