@@ -35,7 +35,7 @@ def publish_img(image_file_path):
     try:
         media_endpoint = config['wordpress']['url'] + 'wp-json/wp/v2/media'
         print(media_endpoint)
-        files = {'file': ('image.jpg', open(image_file_path, 'rb'), 'image/jpeg')}
+        files = {'file': ('image.png', open(image_file_path, 'rb'), 'image/png')}
         media_response = requests.post(media_endpoint, auth=(config['wordpress']['username'], config['wordpress']['password']), files=files)
 
         if media_response.status_code == 201:
