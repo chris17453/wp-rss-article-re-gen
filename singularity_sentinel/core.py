@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import unicodedata
 import string
 import json
-from config import config
+from .config import config
 
 
 def strip_html_tags(html_string):

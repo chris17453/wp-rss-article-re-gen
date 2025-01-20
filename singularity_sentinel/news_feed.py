@@ -1,13 +1,12 @@
-
-import requests
-from bs4 import BeautifulSoup
-import feedparser
-from openai import OpenAI
-from datetime import datetime
 import json
-from core import  strip_html_tags, save_article, load_article
-from wordpress import publish,publish_img,get_or_create_tags,create_or_get_feed_id
-from prompt import generate_content,generate_image,generate_title,validate_content
+import requests
+from datetime import datetime
+import feedparser
+from bs4 import BeautifulSoup
+from openai import OpenAI
+from .core import  strip_html_tags, save_article, load_article
+from .wordpress import publish,publish_img,get_or_create_tags,create_or_get_feed_id
+from .prompt import generate_content,generate_image,generate_title,validate_content
 
 
 
@@ -105,13 +104,10 @@ def parse_rss_feed_and_extract_content(rss_feed_url):
 
 
 
-articles=parse_rss_feed_and_extract_content("https://www.techcrunch.com/rss")
-if articles:
-    # Pretty-print the articles list
-    print(json.dumps(articles, indent=4))
-else:
-    print("No articles were retrieved from the RSS feed.")
-    #lobste.rs
-
-        
-
+#articles=parse_rss_feed_and_extract_content("https://www.techcrunch.com/rss")
+#if articles:
+#    # Pretty-print the articles list
+#    print(json.dumps(articles, indent=4))
+#else:
+#    print("No articles were retrieved from the RSS feed.")
+#    #lobste.rs

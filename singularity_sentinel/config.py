@@ -11,4 +11,5 @@ def load_config():
 config = load_config()
 
 # Configure your OpenAI API key
-client = OpenAI(api_key=config['openai']['openai_api_key'])
+client = OpenAI(api_key=config['openai']['api_key'],organization=config['openai']['orginization_id'])
+

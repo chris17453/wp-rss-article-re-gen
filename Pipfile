@@ -6,8 +6,11 @@ name = "pypi"
 [packages]
 beautifulsoup4 = "*"
 feedparser = "*"
-openai = "*"
 requests = "*"
+replicate = "*"
+httpx = "*"
+openai = "*"
+pillow = "*"
 
 [dev-packages]
 

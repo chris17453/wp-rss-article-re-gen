@@ -1,6 +1,6 @@
 import requests
 import json
-from config import config
+from .config import config
 
 def publish(article):
     # Post data (title and content)

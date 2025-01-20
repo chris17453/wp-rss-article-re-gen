@@ -1,6 +1,9 @@
 config.json
 .vscode-upload.json
+*.code-workspace
 *.json
 *.png
 Pipfile.lock
+images
+articles
 !images/image-63-thegem-blog-default.png

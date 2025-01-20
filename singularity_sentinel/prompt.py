@@ -1,9 +1,29 @@
 import os
+import replicate
 import requests
 from datetime import datetime
-from core import clean_title
+from PIL import Image
 import openai
-from config import client, config
+from .core import clean_title
+from .config import client, config
+
+def compress_image(input_path, output_path, quality=85):
+    """
+    Compress an image and save it to a new file.
+    :param input_path: Path to the input image file.
+    :param output_path: Path to save the compressed image file.
+    :param quality: Compression quality (1-100). Lower means more compression.
+    """
+    print(f"Compressing image: {input_path}")
+    
+    # Open the image
+    with Image.open(input_path) as img:
+        # Convert to RGB (to ensure compatibility with JPEG)
+        img = img.convert("RGB")
+        # Save with the desired quality
+        img.save(output_path, "JPEG", quality=quality)
+    
+    print(f"Compressed image saved to: {output_path}")
 
 def get_prompts():
     # Specify the directory where the .txt files are located
@@ -66,11 +86,13 @@ def generate_title(content):
 # Define a function to generate blog content with GPT-3.5
 def generate_blog_content(title, context):
     # Use the OpenAI API to generate content based on title and context
-    response = client.completions.create(engine="text-davinci-002",
+    response = client.completions.create(engine=config['openai']['llm-model'],
     prompt=f"Write a blog post about '{title}' with the following context:\n{context}",
     max_tokens=300,  # Adjust as needed
     n=1,  # Number of completions
     stop=None)
+    #text=response.choices[0].message.content.strip()
+    #text=text.replace("h3>","h2>")
     return response.choices[0].text
 
 
@@ -89,7 +111,12 @@ def generate_art_prompt(title):
 def generate_image(title):
     prompt=generate_art_prompt(title)
     cleaned_title = clean_title(title)
-    img = create_dalle_image(prompt, cleaned_title)
+    if config['img_src']=="flux":
+        img = create_flux_pro_image(prompt, cleaned_title)
+    elif config['img_src']=="dalle":
+        img = create_dalle_image(prompt, cleaned_title)
+    else:
+        print("No IMG Source configured")
     return img
 
 
@@ -120,3 +147,40 @@ def create_dalle_image(image_desc, title):
         f.write(image_data)
     return image_path
 
+
+# Function to create an image using FLUX PRO
+def create_flux_pro_image(image_desc, title):
+    print("Creating image with FLUX PRO...")
+
+    # Clean and sanitize the title
+    cleaned_title = clean_title(title)
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
+    image_filename = f"{current_datetime}-{cleaned_title}.jpg"
+  
+    # FLUX PRO configuration
+    replicate_client = replicate.Client(api_token=config['replicate']['api_key'])
+    
+    # Input data for FLUX PRO
+    input_data = {
+        "prompt": image_desc,
+        "prompt_upsampling": True,
+        "output_format":"png"
+    }
+    
+    # Run FLUX PRO model
+    output = replicate_client.run(
+        "black-forest-labs/flux-1.1-pro",
+        input=input_data
+    )
+    # Fetch the output image
+    image_data = output.read()
+    #print(image_data)
+    
+    # Define the path and save the image
+    image_path = os.path.join(config['folders']['images'], image_filename)
+    output_path=os.path.join(config['folders']['images'], f"zz_{image_filename}")
+    with open(image_path, "wb") as f:
+        f.write(image_data)
+    compress_image(image_path, output_path, quality=85)
+    print(f"FLUX PRO image saved at: {image_path}")
+    return output_path
