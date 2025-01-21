@@ -2,7 +2,7 @@
 
 AI-NewsFeed is an automated system designed to generate and publish blog posts from RSS feeds to WordPress. It uses AI-powered content generation, image creation, and customizable prompts for automation.
 
-[Logo](assets/logo.jpg)
+![Logo](assets/logo.jpg)
 
 ## Features
 
