@@ -100,10 +100,20 @@ def generate_blog_content(title, context):
 
 
 def generate_art_prompt(title):
+    if config['img_src']=="flux":
+        system_prompt=prompts['flux_system']
+        user_prompt=prompts['flux_user'].format(title=title)
+    elif config['img_src']=="dalle":
+        system_prompt=prompts['dalle_system']
+        user_prompt=prompts['dalle_user'].format(title=title)
+    else:
+        print("No IMG Source configured")
+        return
+
     response = client.chat.completions.create(model="gpt-3.5-turbo",
     messages=[
-        {"role": "system", "content": prompts['dalle_system']},
-        {"role": "user", "content": prompts['dalle_user'].format(title=title)}
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt}
     ])
     return response.choices[0].message.content.strip()
 
@@ -117,6 +127,7 @@ def generate_image(title):
         img = create_dalle_image(prompt, cleaned_title)
     else:
         print("No IMG Source configured")
+        return
     return img
 
 
