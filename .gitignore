@@ -7,3 +7,5 @@ Pipfile.lock
 images
 articles
 !images/image-63-thegem-blog-default.png
+*.flort
+flort.txt
